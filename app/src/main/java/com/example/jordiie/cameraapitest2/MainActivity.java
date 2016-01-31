@@ -2,9 +2,9 @@ package com.example.jordiie.cameraapitest2;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.graphics.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -34,10 +34,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Surf
         SurfaceView cameraView = (SurfaceView) findViewById(R.id.CameraView);
         holder = cameraView.getHolder();
         holder.addCallback(this);
-        //holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         cameraView.setClickable(true);
         cameraView.setOnClickListener(this);
+
     }
 
     private void initRecorder() {
@@ -54,6 +55,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Surf
 
     private void prepareRecorder() {
         recorder.setPreviewDisplay(holder.getSurface());
+        recorder.setOrientationHint(90);
 
         try {
             recorder.prepare();
@@ -81,13 +83,18 @@ public class MainActivity extends Activity implements View.OnClickListener, Surf
         }
     }
 
+
     public void surfaceCreated(SurfaceHolder holder) {
+
         prepareRecorder();
     }
+
+
 
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
     }
+
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         if (recording) {
